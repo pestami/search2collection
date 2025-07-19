@@ -16,6 +16,9 @@
 
 **Each gameslist folders should also exist:**
 
+<details>
+<summary>Games Lists with gamelist.xml</summary>
+
 - /home/pi/.emulationstation/gameslists/amiga/gamelist.xml
 - /home/pi/.emulationstation/gameslists/amstradcpc/gamelist.xml
 - /home/pi/.emulationstation/gameslists/arcade/gamelist.xml
@@ -49,6 +52,9 @@
 - /home/pi/.emulationstation/gameslists/sg-1000/gamelist.xml
 - /home/pi/.emulationstation/gameslists/snes/gamelist.xml
 - /home/pi/.emulationstation/gameslists/zxspectrum/gamelist.xml
+
+
+</details>
 
 
 ## Description of the Program  search2collection.py
