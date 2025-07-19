@@ -16,7 +16,7 @@
 
 **Clone this repository so that the resultant directory exists:**
 
-- /home/pi/Documents/Search2CollectionsRetropie/roms/ports/search2collection
+- /home/pi/RetroPie/roms/ports/search2collection
 
 **Each gameslist folders should also exist:**
 
