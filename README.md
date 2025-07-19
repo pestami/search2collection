@@ -2,6 +2,10 @@
 
 # search2collections  
 
+
+<img src="images/main.png" alt="Alt text" width="400" height="300">
+
+
 ## Prerequisites
 
 **The following directories should exist:**
