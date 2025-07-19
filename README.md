@@ -59,20 +59,59 @@
 
 ## Description of the Program  search2collection.py
 
+### On Startup of Retropie
+Emulationstation on startup detects the program:
+*search2collection.sh* <BR>
+in the folder: <BR>
+*/home/pi/Documents/Search2CollectionsRetropie/roms/ports* <BR>
+and then creates the corrsponding menue item: **SEARCH2COLLECTIONS**.<BR>
+The menue when selected  item will start the PYTHON allication: 
+*search2collection.py*
 
 
+### Database of the gameslists
+One of the programs functions is to scrape all the gamelist.xml files <BR>
+and create a database available to query and generate a corresponding named Collection.
+A collection is similar to a favorites list. <BR>
 
+### Technical
 
-**The file name looks like this:**
+The fields PATH,NAME,DES  are extracted from the gamelist.xml  file.
 
-custom-Hits 80s Cloned.cfg
+- PATH - Path to the game
+- NAME - Name of the game
+- DES - Description of the game
 
-**The content of the collection file looks like this:**
+These are then packed into the fields:
 
-/home/pi/RetroPie/roms/atari2600/Atari 2600 Invaders (hack).bin
+- NAMEROM - name of the rom, this is required to build the collection.
+- CONSOLE - the type of console ATARI, NES etc.
+- SEARCHTEXT - This contains the name of game and the description text 
+ and is used tomatch search criteria.
+- COLLECTIONPATHFILE - name of the rom, this is required to build the collection.
 
-/home/pi/RetroPie/roms/atari2600/Rainbow Invaders NTSC.bin
+### What the program does in brief
 
-/home/pi/RetroPie/roms/atari2600/Space Invaders.bin
+1. The program prompts for a search criteria.<BR>
+Example: *Spaceinvaders*
+
+2. Then searches its own database and creates a list of suggestion.
+
+3. The programthem prompt for a appropriate name to be used for the collection.<BR>
+Example: *Hits 80s Original*
+
+4. The collection is then created.
+
+**Example Contents of a collection file:** 
+<details>
+<summary>custom-Hits 80s Original.cfg</summary>
+/home/pi/RetroPie/roms/megadrive/Space Invaders 90 (J) [x].zip
+/home/pi/RetroPie/roms/sg-1000/Space Invaders (SG-1000).zip
+/home/pi/RetroPie/roms/nes/Spaceinvaders.zip
+/home/pi/RetroPie/roms/atari2600/Q-bert.bin
+/home/pi/RetroPie/roms/atari2600/ElevatorAction.bin
+</details>
+
+5. The program allso has other supportive functions.
 
 
