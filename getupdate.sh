@@ -3,7 +3,7 @@
 clear
 
 echo ========VERSIONS 2024/04/03===========================
-echo 
+echo ========VERSIONS 2025/07/19===========================
 echo 
 echo 
 echo ====================================================
@@ -17,21 +17,23 @@ echo ====================================================
 echo =====Copy all py programs into ports/search2collection from github 
 read -p "Continue? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
 
-rootsource=https://raw.githubusercontent.com/pestami/Search2CollectionsRetropie/
+rootsource=https://raw.githubusercontent.com/pestami/search2collection/
 branch=main/
 
 
-source01=roms/ports/search2collection/pi4.txt  
-target01=/home/pi/ROMS_EXTRA/roms/ports/search2collection/pi4.txt
+source01=pi4.txt  
+target01=/home/pi/RetroPie/roms/ports/search2collection/pi4.txt
+source01=pi3B.txt  
+target01=/home/pi/RetroPie/roms/ports/search2collection/pi4.txt
 
-source02=roms/ports/search2collection/colors.py 
-target02=/home/pi/ROMS_EXTRA/roms/ports/search2collection/colors.py 
+source02=colors.py 
+target02=/home/pi/RetroPie/roms/ports/search2collection/colors.py 
 
-source03=roms/ports/search2collection/search2collection.py 
-target03=/home/pi/ROMS_EXTRA/roms/ports/search2collection/search2collection.py 
+source03=search2collection.py 
+target03=/home/pi/RetroPie/roms/ports/search2collection/search2collection.py 
 
-source04=roms/ports/search2collection/s2c_search.py
-target04=/home/pi/ROMS_EXTRA/roms/ports/search2collection/s2c_search.py
+source04=s2c_search.py
+target04=/home/pi/RetroPie/roms/ports/search2collection/s2c_search.py
 
 #===list of files in text file=====
 # wget -i update.txt
