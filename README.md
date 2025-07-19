@@ -10,7 +10,7 @@
 
 **The following directories should exist:**
 
-- /home/pi/Documents/Search2CollectionsRetropie/roms/ports
+- /home/pi/RetroPie/roms/ports/search2collections
 - /home/pi/.emulationstation/collections
 - /home/pi/.emulationstation/gamelists
 
