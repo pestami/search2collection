@@ -23,7 +23,7 @@ branch=main/
 
 source01=pi4.txt  
 target01=/home/pi/RetroPie/roms/ports/search2collection/pi4.txt
-source01=pi3B.txt  
+source01=pi3Bp.txt  
 target01=/home/pi/RetroPie/roms/ports/search2collection/pi4.txt
 
 source02=colors.py 
