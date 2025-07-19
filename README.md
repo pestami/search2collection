@@ -8,7 +8,7 @@
 
 - /home/pi/Documents/Search2CollectionsRetropie/roms/ports
 - /home/pi/.emulationstation/collections
-- /home/pi/.emulationstation/gameslists
+- /home/pi/.emulationstation/gamelists
 
 **Clone this repository so that the resultant directory exists:**
 
@@ -55,6 +55,9 @@
 
 
 </details>
+
+The program also runs on LINUX without RetroPie installed.
+Prerequisite is the required folders and several gamelist.xml files.
 
 
 ## Description of the Program  search2collection.py

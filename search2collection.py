@@ -33,7 +33,7 @@ def checkInteger(s):
 print(chr(27) + "[2J")
 
 
-print( colors.fg.red, "...")
+print( colors.fg.lightred, "...")
 
 sCMD=''
 result_List=[]
@@ -125,7 +125,7 @@ while(sCMD!='x'):
           s2c.Help('3')
 
     elif  sCOMMAND=='ls':  
-          print( colors.fg.red, "...")
+          print( colors.fg.lightred, "...")
           game_lists_List= s2c.DisplayGameLists()
           print()
           s2c.Help('2')
@@ -138,7 +138,7 @@ while(sCMD!='x'):
           s2c.Help('3')
           
     elif  sCOMMAND=='ds':   
-          print( colors.fg.red, "...")
+          print( colors.fg.lightred, "...")
           s2c.DeleteSystem(sPathFileDB,sPARAMETERS)
           s2c.Help('5')
 

@@ -261,7 +261,7 @@ class s2c:
                 print('==========================================================')
            
             if '2' in ID:
-                print( colors.fg.red, "...")
+                print( colors.fg.lightred, "...")
                 print('\n..Update Search DataBase................................')
                 print('type ls to list installed  game Systems')
                 print('type ws to write index game Systems to DataBase')
