@@ -2,8 +2,7 @@
 
 ### MAIN MENU ###
 
-<img src="images/main.png" alt="Alt text" width="400" height="400"
-00">
+<img src="images/main.png" alt="Alt text" width="400" height="400">
 
 
 ### List Games Systems ###
