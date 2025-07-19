@@ -17,7 +17,7 @@
 **Each gameslist folders should also exist:**
 
 <details>
-<summary>Games Lists with gamelist.xml</summary>
+<summary>Example of Games Lists with gamelist.xml</summary>
 
 - /home/pi/.emulationstation/gameslists/amiga/gamelist.xml
 - /home/pi/.emulationstation/gameslists/amstradcpc/gamelist.xml
