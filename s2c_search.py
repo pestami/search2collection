@@ -96,22 +96,31 @@ class s2c:
         
         #print(chr(27) + "[2J")
         os.system('cls||clear')
-        print('---------------------------------------------------------')
-        print('-----KEWORDS FOUND LIST------------------')
-        sFound=str(len(result_List))
         
-        i=0
-        nTotal=0
-        for items in result_List:
-            i=i+1
-            nTotal=nTotal+1
-            print(items)
-            if i==25:
-                i=0
-                print('Displayed: ' +str(nTotal) +'/'+ sFound +'  Press key to continue, x to exit.........')
-                sCMD = str(input())   
-                if sCMD =='x' or sCMD =='X':
-                    break
+        sCMD=''
+        
+        while sCMD != 'x' and sCMD != 'X':
+            
+           
+            print('---------------------------------------------------------')
+            print('-----KEWORDS FOUND LIST----------------------------------')
+            sFound=str(len(result_List))
+            
+           
+            i=0
+            nTotal=0
+            for items in result_List:
+                i=i+1
+                nTotal=nTotal+1
+                print(str(nTotal)+' : ' + items[0])
+               
+                if i==25:
+                    i=0
+                    print( colors.fg.lightblue, "...")
+                    print('\nDisplayed: ' +str(nTotal) +'/'+ sFound +'  Press key to continue, x to exit.........')
+                    sCMD = str(input())   
+                    if sCMD =='x' or sCMD =='X':
+                        break
             
         print('-----KEWORDS FOUND END-------------------')      
         print('---------------------------------------------------------')
@@ -263,8 +272,8 @@ class s2c:
             if '2' in ID:
                 print( colors.fg.lightred, "...")
                 print('\n..Update Search DataBase................................')
-                print('type ls to list installed  game Systems')
-                print('type ws to write index game Systems to DataBase')
+                print('type ls to list installed game Systems (MAME ,ATARI etc.)')
+                print('type ws to scrape Systems information to Search-DataBase')
                 print('type ds <item> to delete a Systems from the search DataBase')
            
             if '3' in ID:
@@ -282,8 +291,8 @@ class s2c:
             if '5' in ID:
                 print( colors.fg.lightblue, "...")
                 print('\n..SEARCH RESULTS.......................................')
-                print('type l  list last plalists search results')
-                print('type wr to write playlist to a collection list and rename')
+                print('type l  list last plalists resulting from Search criteria')
+                print('type wr to write playlist to a collection list then rename')
                 print('type w  to write playlist to default named collection list')
            
             if '6' in ID:

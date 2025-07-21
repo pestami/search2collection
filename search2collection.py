@@ -29,7 +29,7 @@ def checkInteger(s):
  
 
 
-
+#===============================================================================
 print(chr(27) + "[2J")
 
 
@@ -48,8 +48,8 @@ s2c.Help('')
 while(sCMD!='x'):
 
       
-    print( colors.fg.yellow, colors.cursor.blinkon, ":")   
-    sCMD = str(input())    ##   s space+invaders
+    print( colors.fg.yellow, colors.cursor.blinkon, "")   
+    sCMD = str(input('CMD:'))    ##   s space+invaders
     print( colors.cursor.blinkoff, "")
     if sCMD =='':
         sCMD='?'
@@ -148,14 +148,14 @@ while(sCMD!='x'):
           s2c.Help('')
           
     elif  sCOMMAND=='x':   
-          print( colors.fg.black, "...")
+          print( colors.fg.yellow, "...")
           print('Good Bye, enjoy your games.')
           print('Remember:')
           print('1. : restart emulationstation !')
           print('2. : Ensure collection is set visible !')
-          sDUMMY = str(input())    
+          sDUMMY = str(input('Press any key to Continue:'))    
 
-    elif  sCOMMAND=='?':   
+    elif  sCOMMAND=='?':
           s2c.Help('')
           
     else:
@@ -165,7 +165,7 @@ while(sCMD!='x'):
         
         
 ######################################################################        
-sDUMMY = input()   ##  final wait
+sDUMMY = input('Press any key again:')   ##  final wait
 #-------------------------------------------------------------------------------
 #con.commit()
 #con.close()
