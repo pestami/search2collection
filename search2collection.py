@@ -19,65 +19,106 @@ cur = con.cursor()
 
 from colors import colors
 from s2c_search import s2c
-from my_rich_text import myrich
+from s2c_search_rich import s2c_r
+# from my_rich_text import myrich
 
+from rich.console import Console
+from rich.panel import Panel
+from rich.columns import Columns
+#from rich.scrollable import Scrollable # not in rich
+import os
+
+console = Console()
+#==================================================================
+    
+#==================================================================
 def checkInteger(s):
     # our created pattern to check for the integer value
     if re.match('^[+-]?[0-9]+$', s):
         return True
     else:
         return False
-#==================================================================
-def capture_print():
-    old_stdout = sys.stdout
-    new_stdout = io.StringIO()
-    sys.stdout = new_stdout
-    return new_stdout
-
-def restore_print(old_stdout):
-    sys.stdout = old_stdout
+#------------------------------------------------------------------
+def sListToText(sList,nStart,nEnd):
     
-    # Example usage:
-    # captured_stdout = capture_print()
-    # print("Hello, world!")
-    # print("This is another line.")
-    # restore_print(captured_stdout)
+    sList=sList[nStart:nEnd]
+    sText=''
+    
+    for line in sList:
+        sText+=line +'\n'
+    return sText
+
+def sTextToList(sText):
+    
+    sList=sText.split('\n')
+    
+    return sList    
+    
+#==================================================================
     
 #==================================================================
 
-print(chr(27) + "[2J")
+# print(chr(27) + "[2J")  # no clear screen in rich
 
-print( colors.fg.lightred, "...")
+
 
 sCMD=''
-result_List=[]
+ResultLists=[]
+sResults_Text=''
 collections_List=[]
 game_lists_List=[]
+tResults=''
+scrollable_step=10
+scrollable_page=0
+
+sResultsTitle="RESULTS"
 
 #-------------------------------------------------------------------------------
-
+for i in range(50):
+    ResultLists.append("LINE= " +str(i))
+    sResults_Text+=str(i)+ " Result..." + str(i) +"\n"
     
-myconsole=myrich('[bold magenta]Left Window[/bold magenta]\n','[bold cyan]Right Window[/bold cyan]\n','COMMANDS','RESULTS',120)
-myconsole.clear_console
-myconsole.refresh_console()
+#-------------------------------------------------------------------------------
 
-captured_stdout = capture_print()
+# left_text_panel = Panel(Scrollable(("...", title="RESULTS"))
+# right_text_panel = Panel("...", title="COMMANDS")
+# console.print(Columns([left_text_panel, right_text_panel]))
 
-s2c.Help('123456789')
+#print(chr(27) + "[2J")  # no clear screen in rich
+os.system('cls||clear')
 
-sPrintText=captured_stdout.getvalue()  #string_io.getvalue()
-myconsole.print_right(sPrintText)  
-myconsole.refresh_console()
+sHelp=s2c_r.Help('123456789')
+sHelpLeft='\n=========================================================='
+sPannelResults=sListToText(ResultLists, 0,15)
 
-restore_print(captured_stdout)
-
+# right_text_panel = Panel(sHelp, title="COMMANDS")
+# left_text_panel = Panel(sPannelResults, title="RESULTS")
+# console.print(Columns([left_text_panel, right_text_panel]))
+# console.print(Columns([left_text_panel, right_text_panel]))
 
 #-------------------------------------------------------------------------------
 while(sCMD!='x'):
-      
-    print( colors.fg.yellow, colors.cursor.blinkon, ":")   
-    sCMD = str(input('Command:'))    ##   s space+invaders
-    print( colors.cursor.blinkoff, "")
+    
+    ResultLists=sTextToList(sResults_Text)
+    ResultListsSize=len(ResultLists)
+    sPannelResults=sListToText(ResultLists,scrollable_step *scrollable_page,scrollable_step *(scrollable_page+1))
+    sPannelResults='Press to scroll: u-up d-down \n'+ sPannelResults + '\n'+sHelpLeft
+    # print (scrollable_step *scrollable_page)
+    # print (scrollable_step *(scrollable_page+1))
+    #sPannelResults=sListToText(ResultLists,10,20)
+        
+    right_text_panel = Panel(sHelp, title="COMMANDS")
+    left_text_panel = Panel(sPannelResults, title=sResultsTitle)
+    console.print(Columns([left_text_panel, right_text_panel]))
+       
+
+    # sCMD = str(input('Command:'))    ##   s space+invaders
+    sCMD = console.input("Command: ")
+    
+    os.system('cls||clear')
+    
+    
+    # print( colors.cursor.blinkoff, "")
     if sCMD =='':
         sCMD='?'
         
@@ -87,18 +128,30 @@ while(sCMD!='x'):
     sPARAMETERS=''
     sPARAMETERS=sCMD.replace(sCOMMAND+' ','')
     
-#    print( 'Command='+ sCOMMAND)
-#    print( 'Parameters='+ sPARAMETERS)
-    print( colors.fg.pink, "")
+
 ###################################################################
+         
 ###----search commands---------------------------------------------------       
     if sCOMMAND=='s':
            print( colors.fg.lightblue, "...")
            result_List=s2c.Makeplaylist(sPARAMETERS,'s')   
            
+###----scroll commands--------------------------------------------------- 
+    elif sCOMMAND=='d':
+              scrollable_page+=1
+              if ResultListsSize < scrollable_step *scrollable_page:
+                  scrollable_page=0
+                  
+              
+    elif sCOMMAND=='u':
+                  scrollable_page-=1
+                  if scrollable_page ==-1:
+                      scrollable_page=0
+           
     elif sCOMMAND=='sd':
            print( colors.fg.lightblue, "...")
-           result_List=s2c.Makeplaylist(sPARAMETERS,'sd')            
+           result_List=s2c.Makeplaylist(sPARAMETERS,'sd')   
+           
 ###-----Write Commands--------------------------------------------------  
     elif sCOMMAND=='ws':
             
@@ -129,6 +182,7 @@ while(sCMD!='x'):
             else:
                 print ("Argument is missing, example: ws 1")   
                 
+                
 ###-----Write Commands--------------------------------------------------  
         
     elif  sCOMMAND=='w':   
@@ -151,11 +205,16 @@ while(sCMD!='x'):
           collections_List= s2c.DisplayCollections()
           s2c.Help('3')
 
-    elif  sCOMMAND=='ls':  
-          print( colors.fg.lightred, "...")
-          game_lists_List= s2c.DisplayGameLists()
-          print()
-          s2c.Help('2')
+    elif  sCOMMAND=='ls':    # ----------------------------------MIGRATED
+          # print( colors.fg.lightred, "...")
+          # game_lists_List= s2c.DisplayGameLists()
+          sResults_Text=s2c_r.DisplayGameLists()
+          
+          sResultsTitle='/home/pi/.emulationstation/gamelists/'
+          scrollable_page=0
+          sHelpLeft=s2c_r.Help('2')
+          # print()
+          # s2c.Help('2')
 
 ###-----delete Commands-------------------------------------------------- 
           
