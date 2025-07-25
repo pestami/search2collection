@@ -68,7 +68,7 @@ sResults_Text=''
 collections_List=[]
 game_lists_List=[]
 tResults=''
-scrollable_step=10
+scrollable_step=15
 scrollable_page=0
 
 sResultsTitle="RESULTS"
@@ -80,8 +80,8 @@ for i in range(50):
     
 #-------------------------------------------------------------------------------
 
-# left_text_panel = Panel(Scrollable(("...", title="RESULTS"))
-# right_text_panel = Panel("...", title="COMMANDS")
+# left_text_panel = Panel(Scrollable(("...", title="RESULTS").height=20)
+# right_text_panel = Panel("...", title="COMMANDS",.height=20)
 # console.print(Columns([left_text_panel, right_text_panel]))
 
 #print(chr(27) + "[2J")  # no clear screen in rich
@@ -107,8 +107,8 @@ while(sCMD!='x'):
     # print (scrollable_step *(scrollable_page+1))
     #sPannelResults=sListToText(ResultLists,10,20)
         
-    right_text_panel = Panel(sHelp, title="COMMANDS")
-    left_text_panel = Panel(sPannelResults, title=sResultsTitle)
+    right_text_panel = Panel(sHelp, title="COMMANDS",height=30)
+    left_text_panel = Panel(sPannelResults, title=sResultsTitle,height=30)
     console.print(Columns([left_text_panel, right_text_panel]))
        
 
