@@ -9,7 +9,7 @@
 #-------------------------------------------------------------------------------
 import sqlite3
 import os
-import re
+import re,sys,io
 
 sPathFileDB='/home/pi/RetroPie/roms/ports/search2collection/SearchRetroRoms.db'
 
@@ -19,6 +19,7 @@ cur = con.cursor()
 
 from colors import colors
 from s2c_search import s2c
+from my_rich_text import myrich
 
 def checkInteger(s):
     # our created pattern to check for the integer value
@@ -26,12 +27,25 @@ def checkInteger(s):
         return True
     else:
         return False
- 
+#==================================================================
+def capture_print():
+    old_stdout = sys.stdout
+    new_stdout = io.StringIO()
+    sys.stdout = new_stdout
+    return new_stdout
 
+def restore_print(old_stdout):
+    sys.stdout = old_stdout
+    
+    # Example usage:
+    # captured_stdout = capture_print()
+    # print("Hello, world!")
+    # print("This is another line.")
+    # restore_print(captured_stdout)
+    
+#==================================================================
 
-#===============================================================================
 print(chr(27) + "[2J")
-
 
 print( colors.fg.lightred, "...")
 
@@ -42,14 +56,27 @@ game_lists_List=[]
 
 #-------------------------------------------------------------------------------
 
-s2c.Help('')
- 
+    
+myconsole=myrich('[bold magenta]Left Window[/bold magenta]\n','[bold cyan]Right Window[/bold cyan]\n','COMMANDS','RESULTS',120)
+myconsole.clear_console
+myconsole.refresh_console()
+
+captured_stdout = capture_print()
+
+s2c.Help('123456789')
+
+sPrintText=captured_stdout.getvalue()  #string_io.getvalue()
+myconsole.print_right(sPrintText)  
+myconsole.refresh_console()
+
+restore_print(captured_stdout)
+
+
 #-------------------------------------------------------------------------------
 while(sCMD!='x'):
-
       
-    print( colors.fg.yellow, colors.cursor.blinkon, "")   
-    sCMD = str(input('CMD:'))    ##   s space+invaders
+    print( colors.fg.yellow, colors.cursor.blinkon, ":")   
+    sCMD = str(input('Command:'))    ##   s space+invaders
     print( colors.cursor.blinkoff, "")
     if sCMD =='':
         sCMD='?'
@@ -153,7 +180,7 @@ while(sCMD!='x'):
           print('Remember:')
           print('1. : restart emulationstation !')
           print('2. : Ensure collection is set visible !')
-          sDUMMY = str(input('Press any key to Continue:'))    
+          sDUMMY = str(input('press any key to continue:'))    
 
     elif  sCOMMAND=='?':
           s2c.Help('')
@@ -165,7 +192,7 @@ while(sCMD!='x'):
         
         
 ######################################################################        
-sDUMMY = input('Press any key again:')   ##  final wait
+sDUMMY = input('press any key to continue:')   ##  final wait
 #-------------------------------------------------------------------------------
 #con.commit()
 #con.close()
