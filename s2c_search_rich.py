@@ -11,8 +11,7 @@ import sqlite3
 from colors import colors
 import os
 import re
-from xml.dom.minidom import parse
-import xml.dom.minidom
+from s2c_db import s2c_db
 
 class s2c_r:
 
@@ -73,7 +72,7 @@ class s2c_r:
                 sHelp+= '[bright_white]'
                 sHelp+='\n\n..SEARCH RESULTS.......................................'
                 sHelp+='\ntype l  list last plalists resulting from Search criteria'
-                sHelp+='\ntype wr to write playlist to a collection list then rename'
+                sHelp+='\ntype wr <item> to write playlist to a collection + rename'
                 sHelp+='\ntype w  to write playlist to default named collection list'
                 sHelp+= '[/bright_white]'
            
@@ -90,7 +89,7 @@ class s2c_r:
 #-------------------------------------------------------------------------------
 #============================================================================
 #===========================================================================
-    def DisplayGameLists():
+    def DisplayGameLists(): # ----------------------------------MIGRATED
                
                 pathcollections='/home/pi/.emulationstation/gamelists/'
                 sGameLists=''
@@ -109,24 +108,136 @@ class s2c_r:
                     sGameLists+=str(i) + ":" + sfiles +'\n'
                     i=i+1
                     
-                return sGameLists
+                return sGameLists, dir_list
 #-------------------------------------------------------------------------------
+#============================================================================
+#===========================================================================
+    def DisplayCollections(): # ----------------------------------MIGRATED
+               
+                pathcollections='/home/pi/.emulationstation/collections/'             
+                sCollectionsLists=''
+                
+                dir_list = os.listdir(pathcollections)
+                i=0
+               
+                # prints all files
+                # os.system('cls||clear')
+                # print('.........................................................')
+                # print('-----COLLECTIONS FOUND------------------')
+                # print("Directory= '", pathcollections, "' :")
+                
+                for sfiles in dir_list:                   
+                    sCollectionsLists+=str(i) + ":" + sfiles +'\n'
+                    i=i+1
+                return sCollectionsLists, dir_list
+#===========================================================================
+    def DeleteCollection(collections_List,sIndex): # -------------MIGRATED
+            
+            pathcollections='/home/pi/.emulationstation/collections/' 
+            file_path = pathcollections + collections_List[int(sIndex)]
+            
+            if os.path.exists(file_path):
+                    os.remove(file_path)
+                    sMessage="\nThe collection has been removed.\n"
+                    sMessage+=file_path
+            else:
+                    sMessage="\nThe system cannot find the file specified. \n"
+                    sMessage+=file_path
+            return   sMessage               
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+    def Makeplaylist(skeywords,sCMD): # --------------------------MIGRATED
+        
+        sPathFileDB='/home/pi/RetroPie/roms/ports/search2collection/SearchRetroRoms.db'
+    
+        con = sqlite3.connect(sPathFileDB)
+        con.text_factory = str
+        cur = con.cursor()
+        
+        skeywordsDelimited=skeywords.replace('+','#OR#')
+        skeywordsDelimited=skeywordsDelimited.replace(' ','#OR#')
+        skeywordsDelimited=skeywordsDelimited.replace('*','#AND#')
+        lKeywordsRAW = skeywordsDelimited.split('#')          
+        
+        lOperators =lKeywordsRAW[1::2]   #a[start:stop:step]    lKeywordsRAW=['sd' ,'space','+','invaders','*','new']                                
+        lKeywords= lKeywordsRAW[0::2]     
 
+        
+
+        sSQLlike=''   
+        
+        i=0                                 
+        for item in  lKeywords:
+           
+            if i==0:
+               sSQLlike='like \'%' + item + '%\''  
+            else:
+                
+                sSQLlike=sSQLlike + lOperators[i-1] + ' &COLUMN& like \'%' + item + '%\'' 
+            i=i+1
+                   
+#----------------------------------------------------------                                        
+        #NAMEROM like '%invader%' OR NAMEROM like '%asteroid%  
+        if sCMD=='sd':   
+                sCOLUMN='SEARCHTEXT'
+        if sCMD=='s':     
+                sCOLUMN='NAMEROM'   
+                  
+        sSQL='''
+                        SELECT
+                        COLLECTIONPATHFILE
+                        FROM LIST_SEARCH_DB
+                        WHERE 
+                        &COLUMN& &LIKE&
+                        ORDER BY
+                        COLLECTIONPATHFILE ASC
+                ''' 
+         
+  
+#----------------------------------------------------------  
+        sSQL=sSQL.replace('&LIKE&',sSQLlike)
+        sSQL=sSQL.replace('&COLUMN&',sCOLUMN)
+
+                                 
+        cur.execute(sSQL)
+        
+        lGamesRomCollectionsList=cur.fetchall()
+        
+        con.commit()
+        con.close()
+        
+        sGamesRomLists=''
+        for games in lGamesRomCollectionsList:                   
+            sGamesRomLists+=str(i) + ":" + games[0].replace('/home/pi/RetroPie/roms/','') +'\n'
+            i=i+1
+        
+                
+        # sMessage='=====================================================\n'
+        sMessage='==SQL================================================\n'
+        # sMessage+='=====================================================\n'
+        # sMessage+=lKeywords +'\n'
+        # sMessage+=lOperators         +'\n'                         
+        # sMessage+='-----------------------------------------------------\n' 
+        sMessage+=sSQL  +'\n'  
+        sMessage+='Found:' + str(len(lGamesRomCollectionsList)) + ' games.' +'\n'
+        sMessage+='=====================================================\n'
+    
+        return sGamesRomLists, sMessage, lGamesRomCollectionsList
+#-------------------------------------------------------------------------------
 #===========================================================================
 #============================================================================
-    def Displaylist(result_List):
+    def Displaylist(result_List): # ------------------------------MIGRATED IN WORK
         
         #print(chr(27) + "[2J")
-        os.system('cls||clear')
+        # os.system('cls||clear')
         
         sCMD=''
-        sDisplaylist=''
         
         while sCMD != 'x' and sCMD != 'X':
             
            
-            sDisplaylist+='------------------------------'
-            sDisplaylist+='-----KEWORDS FOUND LIST-------'
+            print('---------------------------------------------------------')
+            print('-----KEWORDS FOUND LIST----------------------------------')
             sFound=str(len(result_List))
             
            
@@ -135,15 +246,12 @@ class s2c_r:
             for items in result_List:
                 i=i+1
                 nTotal=nTotal+1
-                sDisplaylist+=str(nTotal)+' : ' + items[0]
+                print(str(nTotal)+' : ' + items[0])
                
                 if i==25:
                     i=0
                     print( colors.fg.lightblue, "...")
-                    sPRINT='\nDisplayed: ' +str(nTotal) +'/'+ sFound +'  Press key to continue, x to exit.........'
-                    sDisplaylist+=sPRINT
-                    
-                    
+                    print('\nDisplayed: ' +str(nTotal) +'/'+ sFound +'  Press key to continue, x to exit.........')
                     sCMD = str(input())   
                     if sCMD =='x' or sCMD =='X':
                         break
@@ -151,17 +259,86 @@ class s2c_r:
         print('-----KEWORDS FOUND END-------------------')      
         print('---------------------------------------------------------')
     
-        return sDisplaylist 
-    
+#-------------------------------------------------------------------------------
+#============================================================================   
+
+#============================================================================
+#============================================================================
+    def WriteToCollectionRename(result,sName):
+        
+            # print('.........................................................')
+            # print('Collection will be saved: custom-A-KEYWORD.cfg')
+            # print('Type the keyword KEYWORD you would like to use to write the collection: ')
+            # sName = str(input())
+            # sName=sName.replace(' ','')
+
+            PathFile='/home/pi/.emulationstation/collections/custom-A-KEYWORD.cfg'
+            PathFile=PathFile.replace('KEYWORD',sName)
+            
+            with open(PathFile, 'w') as writer:  
+                
+                 writer.write('/home/pi/RetroPie/roms/ports/search2collection.sh\n')
+                 nCount=0
+                 for items in result:
+                   #  print(items)   
+                     writer.write(items[0] + '\n')
+                     nCount=nCount+1
+            writer.close
+            sMessage='  '
+            sMessage+='.........................................................'          
+            sMessage+='Collection has been saved to: \n'
+            sMessage+= PathFile+ ' \n'           
+            sMessage+='Found:' + str(nCount) + ' games.\n'
+            sMessage+='.........................................................\n'
+            
+            return sMessage
 #-------------------------------------------------------------------------------
 #============================================================================
-#============================================================================
-   
+#===========================================================================
+    def WriteToCollection(result):
 
+            
+            PathFile='/home/pi/.emulationstation/collections/custom-A-search-KEYWORD.cfg'
+            with open(PathFile, 'w') as writer:  
+                
+                 writer.write('/home/pi/RetroPie/roms/ports/search2collection.sh\n')
+                 nCount=0
+                 for items in result:
+                   #  print(items)   
+                     writer.write(items[0] + '\n')
+                     nCount=nCount+1
+            writer.close
+            sMessage='.........................................................\n'
+            sMessage+='Collection has been saved: custom-A-search-KEYWORD.cfg\n'
+            sMessage+='Found:' + str(nCount) + ' games.\n'
+            sMessage+='.........................................................\n'
+            
+            return sMessage
+#-------------------------------------------------------------------------------
+#============================================================================
+#===========================================================================
+    def DeleteSystem(sPathFileDB,sSystemName):
+            print('.........................................................')
+            print('Type systems name(NES, SNES etc.), it will be deleted: ')     
+            sSystemName = str(input())
+            sSystemName=sSystemName.replace(' ','')
+            
+            con = sqlite3.connect(sPathFileDB)
+            con.text_factory = str
+            cur = con.cursor()
+            sSQL="DELETE FROM LIST_SEARCH_DB WHERE CONSOLE='" + sSystemName + "';"
+            print(sSQL)
+            cur.execute(sSQL)
 
-#============================================================================
-#============================================================================
+            print('Rows Deleted =' + str(cur.rowcount))
+##            sSQL_01="UPDATE LIST_GAMES_META SET CONSOLE = '"+console+"'; "
+##            cur.execute(sSQL_01)
+
+            con.commit()
+            con.close()
         
+#============================================================================
+#============================================================================   
 ###############################################################################
 if __name__ == '__main__':
     

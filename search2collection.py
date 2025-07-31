@@ -20,6 +20,7 @@ cur = con.cursor()
 from colors import colors
 from s2c_search import s2c
 from s2c_search_rich import s2c_r
+from s2c_db import s2c_db
 # from my_rich_text import myrich
 
 from rich.console import Console
@@ -89,35 +90,44 @@ os.system('cls||clear')
 
 sHelp=s2c_r.Help('123456789')
 sHelpLeft='\n=========================================================='
-sPannelResults=sListToText(ResultLists, 0,15)
+sPannelText=sListToText(ResultLists, 0,20)
 
 # right_text_panel = Panel(sHelp, title="COMMANDS")
-# left_text_panel = Panel(sPannelResults, title="RESULTS")
+# left_text_panel = Panel(sPannelText, title="RESULTS")
 # console.print(Columns([left_text_panel, right_text_panel]))
 # console.print(Columns([left_text_panel, right_text_panel]))
 
 #-------------------------------------------------------------------------------
+#---------MAIN LOOP-------------------------------------------------------------
+#-------------------------------------------------------------------------------
+sFOOTER=''
+sHEADER=''
+sBODY=''
+
 while(sCMD!='x'):
     
+    #------PREPARE PANNEL CONTENTS-LEFT----sPannelText=sHEADER + sBODY + sFOOTER--------- 
+    sHEADER='[green]Page: '+str(scrollable_page)+' Press to scroll: u-up d-down [/green]\n\n'
     ResultLists=sTextToList(sResults_Text)
     ResultListsSize=len(ResultLists)
-    sPannelResults=sListToText(ResultLists,scrollable_step *scrollable_page,scrollable_step *(scrollable_page+1))
-    sPannelResults='Press to scroll: u-up d-down \n'+ sPannelResults + '\n'+sHelpLeft
-    # print (scrollable_step *scrollable_page)
-    # print (scrollable_step *(scrollable_page+1))
-    #sPannelResults=sListToText(ResultLists,10,20)
+    sBODY=sListToText(ResultLists,scrollable_step *scrollable_page,scrollable_step *(scrollable_page+1))
+    
+    if "\n[green]" not in sFOOTER:
+        sFOOTER='\n'+'[green]'+ sFOOTER +'[/green]' #
         
-    right_text_panel = Panel(sHelp, title="COMMANDS",height=30)
-    left_text_panel = Panel(sPannelResults, title=sResultsTitle,height=30)
+    sPannelText=sHEADER + sBODY +sFOOTER
+    #---------------------------------------------------------------------- 
+    
+    #-----SHOW PANNEL------------------------------------------------------    
+    right_text_panel = Panel(sHelp, title="COMMANDS",height=30,width=65)
+    left_text_panel = Panel(sPannelText, title=sResultsTitle,height=30,width=65)
     console.print(Columns([left_text_panel, right_text_panel]))
-       
+    #----------------------------------------------------------------------    
 
+    #-----COMMANDLINE------------------------------------------------------  
     # sCMD = str(input('Command:'))    ##   s space+invaders
-    sCMD = console.input("Command: ")
-    
-    os.system('cls||clear')
-    
-    
+    sCMD = console.input("Command: ")    
+       
     # print( colors.cursor.blinkoff, "")
     if sCMD =='':
         sCMD='?'
@@ -125,16 +135,29 @@ while(sCMD!='x'):
     sCMD_LINE=sCMD.split(' ') 
     
     sCOMMAND=sCMD_LINE[0]
-    sPARAMETERS=''
-    sPARAMETERS=sCMD.replace(sCOMMAND+' ','')
+    
+    if len(sCMD_LINE) > 1:
+        sCMD_PARAMETERS=sCMD_LINE[1]
+    else:
+        sCMD_PARAMETERS=''
+        
+    # sCMD_PARAMETERS=sCMD.replace(sCOMMAND+' ','') # works for with or without parameter
+    #---------------------------------------------------------------------- 
+    
+    os.system('cls||clear') 
     
 
 ###################################################################
          
 ###----search commands---------------------------------------------------       
-    if sCOMMAND=='s':
-           print( colors.fg.lightblue, "...")
-           result_List=s2c.Makeplaylist(sPARAMETERS,'s')   
+    if sCOMMAND=='s' and sCMD_PARAMETERS:   # ----------------------------------MIGRATED
+           
+           result_List,sMessage,lGamesRomCollectionsList =s2c_r.Makeplaylist(sCMD_PARAMETERS,'s')
+           sResultsTitle='SEARCH SQL RESULTS'
+           sResults_Text=sMessage
+           sFOOTER=  s2c_r.Help('5')
+           
+           
            
 ###----scroll commands--------------------------------------------------- 
     elif sCOMMAND=='d':
@@ -148,17 +171,22 @@ while(sCMD!='x'):
                   if scrollable_page ==-1:
                       scrollable_page=0
            
-    elif sCOMMAND=='sd':
-           print( colors.fg.lightblue, "...")
-           result_List=s2c.Makeplaylist(sPARAMETERS,'sd')   
+    elif sCOMMAND=='sd': # ----------------------------------MIGRATED 
+          
+           result_List,sMessage,lGamesRomCollectionsList =s2c_r.Makeplaylist(sCMD_PARAMETERS,'sd')  
+           # lGamesRomCollectionsList the list required for gamelist
+           sResultsTitle='SEARCH SQL RESULTS'
+           sResults_Text=sMessage
+           sFOOTER=  s2c_r.Help('5')
+           
            
 ###-----Write Commands--------------------------------------------------  
-    elif sCOMMAND=='ws':
+    elif sCOMMAND=='ws':# ----------------------------------MIGRATED
             
             #--- parameters
-            print( colors.fg.lightblue, "...")
-            if checkInteger(sPARAMETERS):            
-                sSystemName= game_lists_List[int(sPARAMETERS)]
+            #print( colors.fg.lightblue, "...")
+            if checkInteger(sCMD_PARAMETERS):            
+                sSystemName= game_lists_List[int(sCMD_PARAMETERS)]
            
             
                 #--- Get ROMS in FOLDER
@@ -166,72 +194,88 @@ while(sCMD!='x'):
                 sPathROMS="/home/pi/RetroPie/roms/"+sSystemName       
                 sPathNameGamelist='/home/pi/.emulationstation/gamelists/' + sSystemName + '/gamelist.xml'
                 
-                print ("Your selection= " + sSystemName)
+                sFOOTER= "Your selection= " + sSystemName +'\n'
                 
-                lLIST_XML_GAMESLISTS_Metadata,lgames =s2c.ExtractMetadatefromGameXML(sPathNameGamelist,sPathROMS)   
-               # print(lLIST_XML_GAMESLISTS_Metadata[0])
+                lLIST_XML_GAMESLISTS_Metadata,lgames,nSizeGamelist = s2c_db.ExtractMetadatefromGameXML(sPathNameGamelist,sPathROMS,flagDebug=False)   
                
-                print ("..................................................................\n")
-                print ("Number of ROMS Detected in folder=" + str(len(lgames)))
-                print ("Number of ROMS Listed in gamelist=" + str(len(lLIST_XML_GAMESLISTS_Metadata)))
-                print ("..................................................................\n")
+                # print(lLIST_XML_GAMESLISTS_Metadata[0])
+               
+                sROMCOUNT=str(len(lLIST_XML_GAMESLISTS_Metadata))
+               
+                sFOOTER+= ".......................................\n"
+                sFOOTER+= "Number of ROMS Detected in folder=" + str(len(lgames))+'\n'
+                sFOOTER+= "Number of ROMS Listed in gamelist=" + str(nSizeGamelist)+'\n'
+                sFOOTER+= "The Name of Game and Description of " + sROMCOUNT + " ROMS \n"
+                sFOOTER+= 'were loaded into search DB \n'
+                sFOOTER+= ".......................................\n"
                 
-                console=sSystemName
+                sConsole=sSystemName
                 sPathFileDB="/home/pi/RetroPie/roms/ports/search2collection/SearchRetroRoms.db"             
-                s2c.ROM_DB_LoadGameListsContents(sPathFileDB,lLIST_XML_GAMESLISTS_Metadata,console)
+                s2c_db.ROM_DB_LoadGameListsContents(sPathFileDB,lLIST_XML_GAMESLISTS_Metadata,sConsole)
+                
             else:
-                print ("Argument is missing, example: ws 1")   
+                # print ("Argument is missing, example: ws 1")   
+                sFOOTER="WS: Argument is missing, example: ws 1"
                 
                 
 ###-----Write Commands--------------------------------------------------  
         
-    elif  sCOMMAND=='w':   
-          print( colors.fg.lightblue, "...")
-          s2c.WriteToCollection(result_List)          
+    elif  sCOMMAND=='w':   # ----------------------------------MIGRATED IN WORK
+          # print( colors.fg.lightblue, "...")
+          sMessage= s2c_r.WriteToCollection(lGamesRomCollectionsList)
           
-    elif  sCOMMAND=='wr':  
-          print( colors.fg.lightblue, "...")
-          s2c. WriteToCollectionRename(result_List)      
+          sResultsTitle='COLLECTION CREATION'
+          sResults_Text=sMessage
+          sFOOTER=  s2c_r.Help('5')
+          
+    elif  sCOMMAND=='wr' and sCMD_PARAMETERS:  # ----------------------------------MIGRATED IN WORK
+          # print( colors.fg.lightblue, "...")
+          sMessage= s2c_r.WriteToCollectionRename(lGamesRomCollectionsList,sCMD_PARAMETERS)   
+          
+          sResultsTitle='COLLECTION CREATION'
+          sResults_Text=sMessage
+          sFOOTER=  s2c_r.Help('5')
     
 ###-----list Commands--------------------------------------------------          
           
-    elif  sCOMMAND=='l':   
-          print( colors.fg.lightblue, "...")
-          s2c.Displaylist(result_List)
-          s2c.Help('5')
+    elif  sCOMMAND=='l':   # ----------------------------------MIGRATED
+
+             sResults_Text=result_List
+             nLen=sResults_Text.count('\n')
+             sResultsTitle=str(nLen) + ' SEARCH RESULTS LISTED'
+             scrollable_page=0
+             sFOOTER=s2c_r.Help('5')
           
-    elif  sCOMMAND=='lc': 
-          print( colors.fg.purple, "...")
-          collections_List= s2c.DisplayCollections()
-          s2c.Help('3')
+    elif  sCOMMAND=='lc':  # ----------------------------------MIGRATED
+         
+              sResults_Text,collections_List=s2c_r.DisplayCollections() 
+              sResultsTitle='/home/pi/.emulationstation/collections/'
+              scrollable_page=0
+              sFOOTER=s2c_r.Help('3')
 
     elif  sCOMMAND=='ls':    # ----------------------------------MIGRATED
-          # print( colors.fg.lightred, "...")
-          # game_lists_List= s2c.DisplayGameLists()
-          sResults_Text=s2c_r.DisplayGameLists()
-          
-          sResultsTitle='/home/pi/.emulationstation/gamelists/'
-          scrollable_page=0
-          sHelpLeft=s2c_r.Help('2')
-          # print()
-          # s2c.Help('2')
+              sResults_Text,game_lists_List=s2c_r.DisplayGameLists()          
+              sResultsTitle='/home/pi/.emulationstation/gamelists/'
+              scrollable_page=0
+              sFOOTER=s2c_r.Help('2')
+
 
 ###-----delete Commands-------------------------------------------------- 
           
-    elif  sCOMMAND=='dc':  
-          print( colors.fg.purple, "...")
-          s2c.DeleteCollection(collections_List)
-          s2c.Help('3')
+    elif  sCOMMAND=='dc':   # ----------------------------------MIGRATED
+    
+              sMessage= s2c_r.DeleteCollection(collections_List,sCMD_PARAMETERS)
+              sFOOTER=s2c_r.Help('3') +sMessage
           
     elif  sCOMMAND=='ds':   
-          print( colors.fg.lightred, "...")
-          s2c.DeleteSystem(sPathFileDB,sPARAMETERS)
-          s2c.Help('5')
+          # print( colors.fg.lightred, "...")
+          s2c_r.DeleteSystem(sPathFileDB,sCMD_PARAMETERS)
+          s2c_r.Help('5')
 
 ###-----System Commands--------------------------------------------------           
     elif  sCOMMAND=='h': 
           print( colors.fg.green, "...")
-          s2c.Help('')
+          s2c_r.Help('')
           
     elif  sCOMMAND=='x':   
           print( colors.fg.yellow, "...")
@@ -242,13 +286,15 @@ while(sCMD!='x'):
           sDUMMY = str(input('press any key to continue:'))    
 
     elif  sCOMMAND=='?':
-          s2c.Help('')
+          s2c_r.Help('')
           
     else:
-        print('...........................................')
-        print('Unkown command = ' + sCMD )
-        print('With Parameters = ' + sPARAMETERS )
-        
+        sResults_Text='[red]'
+        sResults_Text+='...........................................\n'
+        sResults_Text+='Unkown command =' + sCMD +'\n'
+        sResults_Text+='With Parameters =' + sCMD_PARAMETERS +'\n'
+        sResults_Text+='...........................................\n'
+        sResults_Text+='[/red]'
         
 ######################################################################        
 sDUMMY = input('press any key to continue:')   ##  final wait
