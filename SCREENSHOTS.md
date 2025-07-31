@@ -2,6 +2,8 @@
 
 ### MAIN MENU ###
 
+<img src="images/search2collectio_rich.png" alt="Alt text" width="400" height="400">
+
 <img src="images/main.png" alt="Alt text" width="400" height="400">
 
 
