@@ -5,7 +5,9 @@
 # Author:      MPA
 #
 # Created:     2024 05 03
+# Created:     2025 08 16
 #
+#Modules required rich pip3 install rich
 #-------------------------------------------------------------------------------
 import sqlite3
 import os
