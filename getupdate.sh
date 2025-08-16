@@ -33,7 +33,7 @@ source03=search2collection.py
 target03=/home/pi/RetroPie/roms/ports/search2collection/search2collection.py 
 
 source04=s2c_search.py
-target04=/home/pi/RetroPie/roms/ports/search2collection/s2c_search.py
+target04=/home/pi/RetroPie/roms/ports/search2collection/s2c_search_rich.py
 
 #===list of files in text file=====
 # wget -i update.txt
