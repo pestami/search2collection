@@ -32,7 +32,7 @@ target02=/home/pi/RetroPie/roms/ports/search2collection/colors.py
 source03=search2collection.py 
 target03=/home/pi/RetroPie/roms/ports/search2collection/search2collection.py 
 
-source04=s2c_search.py
+source04=s2c_search_rich.py
 target04=/home/pi/RetroPie/roms/ports/search2collection/s2c_search_rich.py
 
 #===list of files in text file=====
