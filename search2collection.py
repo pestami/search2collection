@@ -18,7 +18,6 @@ con.text_factory = str
 cur = con.cursor()
 
 from colors import colors
-from s2c_search import s2c
 from s2c_search_rich import s2c_r
 from s2c_db import s2c_db
 # from my_rich_text import myrich
