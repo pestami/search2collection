@@ -11,6 +11,6 @@ def key_received(key):
     if key=='Hat 0 [Up]':
         print("Let us exit")
 
-run_event_loop(print_add, print_remove, key_received)
+run_event_loop(print_add, print_remove, key_received) 
 
     
