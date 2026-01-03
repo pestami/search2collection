@@ -51,7 +51,8 @@ def sListToText(sList,nStart,nEnd):
     return sText
 
 def sTextToList(sText):
-    
+    # print("Debug.sTextToList" )
+    # print(sText)
     sList=sText.split('\n')
     
     return sList    
@@ -66,7 +67,8 @@ def sTextToList(sText):
 
 sCMD=''
 ResultLists=[]
-sResults_Text=''
+result_List='Search results are empty please use: commnad=s\n to create a search results set. ' # sql results from search
+sResults_Text='Search results are empty '
 collections_List=[]
 game_lists_List=[]
 tResults=''
@@ -108,10 +110,11 @@ sBODY=''
 while(sCMD!='x'):
     
     #------PREPARE PANNEL CONTENTS-LEFT----sPannelText=sHEADER + sBODY + sFOOTER--------- 
-    sHEADER='[green]Page: '+str(scrollable_page)+' Press to scroll: u-up d-down [/green]\n\n'
-    ResultLists=sTextToList(sResults_Text)
-    ResultListsSize=len(ResultLists)
-    sBODY=sListToText(ResultLists,scrollable_step *scrollable_page,scrollable_step *(scrollable_page+1))
+    if sResults_Text :
+        sHEADER='[green]Page: '+str(scrollable_page)+' Press to scroll: u-up d-down [/green]\n\n'
+        ResultLists=sTextToList(sResults_Text)
+        ResultListsSize=len(ResultLists)
+        sBODY=sListToText(ResultLists,scrollable_step *scrollable_page,scrollable_step *(scrollable_page+1))
     
     if "\n[green]" not in sFOOTER:
         sFOOTER='\n'+'[green]'+ sFOOTER +'[/green]' #
@@ -240,6 +243,8 @@ while(sCMD!='x'):
 ###-----list Commands--------------------------------------------------          
           
     elif  sCOMMAND=='l':   # ----------------------------------MIGRATED
+    
+    
 
              sResults_Text=result_List
              nLen=sResults_Text.count('\n')
