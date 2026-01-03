@@ -67,7 +67,8 @@ def sTextToList(sText):
 
 sCMD=''
 ResultLists=[]
-sResults_Text=''
+result_List='Search results are empty please use: commnad=s\n to create a search results set. ' # sql results from search
+sResults_Text='Search results are empty '
 collections_List=[]
 game_lists_List=[]
 tResults=''
@@ -106,14 +107,16 @@ sFOOTER=''
 sHEADER=''
 sBODY=''
 
+keyboard = Keyboard()
+
 while(sCMD!='x'):
 
-    #------PREPARE PANNEL CONTENTS-LEFT----sPannelText=sHEADER + sBODY + sFOOTER---------
-    sHEADER='[green]Page: '+str(scrollable_page)+' Press to scroll: u-up d-down [/green]\n\n'
-    ResultLists=sTextToList(sResults_Text)
-    ResultListsSize=len(ResultLists)
-    sBODY=sListToText(ResultLists,scrollable_step *scrollable_page,scrollable_step *(scrollable_page+1))
-
+    if sResults_Text :
+        sHEADER='[green]Page: '+str(scrollable_page)+' Press to scroll: u-up d-down [/green]\n\n'
+        ResultLists=sTextToList(sResults_Text)
+        ResultListsSize=len(ResultLists)
+        sBODY=sListToText(ResultLists,scrollable_step *scrollable_page,scrollable_step *(scrollable_page+1))
+    
     if "\n[green]" not in sFOOTER:
         sFOOTER='\n'+'[green]'+ sFOOTER +'[/green]' #
 
@@ -126,7 +129,7 @@ while(sCMD!='x'):
     console.print(Columns([left_text_panel, right_text_panel]))
     #----------------------------------------------------------------------
 
-    keyboard = Keyboard()
+    
 ##    sPannelText = keyboard.draw_keyboard_textvar((1,1))
 ##
 ##    keyboard_panel = Panel(sPannelText, title=sResultsTitle,height=6,width=65)
@@ -135,8 +138,9 @@ while(sCMD!='x'):
     #-----COMMANDLINE------------------------------------------------------
     # sCMD = str(input('Command:'))    ##   s space+invaders
     #sCMD = console.input("Command: ")
-    sCOMMANDLINE= keyboard.draw_keyboard_loop()
-
+    print(": " + sCMD)
+    sCMD= keyboard.draw_keyboard_loop()
+   
     # print( colors.cursor.blinkoff, "")
     if sCMD =='':
         sCMD='?'
