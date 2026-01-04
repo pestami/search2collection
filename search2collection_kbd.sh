@@ -5,4 +5,4 @@ echo
 echo 
 #=========================================================
 
-python3 /home/pi/RetroPie/roms/ports/search2collection/search2collection.py
+python3 /home/pi/RetroPie/roms/ports/search2collection/search2collection_kbd.py

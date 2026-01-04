@@ -4,6 +4,8 @@ clear
 
 echo ========VERSIONS 2024/04/03===========================
 echo ========VERSIONS 2025/07/19===========================
+echo ========VERSIONS 2025/06/16===========================
+echo Uses rich text library
 echo 
 echo 
 echo ====================================================
@@ -19,12 +21,12 @@ read -p "Continue? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][e
 
 rootsource=https://raw.githubusercontent.com/pestami/search2collection/
 branch=main/
-
-
+echo =======GETING README FILES=================================
 source01=pi4.txt  
 target01=/home/pi/RetroPie/roms/ports/search2collection/pi4.txt
 source01=pi3Bp.txt  
 target01=/home/pi/RetroPie/roms/ports/search2collection/pi4.txt
+echo =======GETING PYTHON========================================
 
 source02=colors.py 
 target02=/home/pi/RetroPie/roms/ports/search2collection/colors.py 
@@ -32,8 +34,18 @@ target02=/home/pi/RetroPie/roms/ports/search2collection/colors.py
 source03=search2collection.py 
 target03=/home/pi/RetroPie/roms/ports/search2collection/search2collection.py 
 
-source04=s2c_search.py
-target04=/home/pi/RetroPie/roms/ports/search2collection/s2c_search.py
+source04=s2c_search_rich.py
+target04=/home/pi/RetroPie/roms/ports/search2collection/s2c_search_rich.py
+
+source05=s2c_db.py
+target05=/home/pi/RetroPie/roms/ports/search2collection/s2c_db.py
+
+echo =======GETING PYTHON Experimantal code =======================
+
+echo =======GETING PYTHON Experimantal code =======================
+
+
+echo =======GETING DataBase========================================
 
 #===list of files in text file=====
 # wget -i update.txt
@@ -43,7 +55,7 @@ wget -O $target01 $rootsource$branch$source01
 wget -O $target02 $rootsource$branch$source02 
 wget -O $target03 $rootsource$branch$source03
 wget -O $target04 $rootsource$branch$source04
-
+wget -O $target05 $rootsource$branch$source05
 
 
 read -p "Continue? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1

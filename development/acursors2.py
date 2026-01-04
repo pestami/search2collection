@@ -5,6 +5,40 @@ import sys
 #class acursors:
 
 #-------------------------------------------------------------------------------
+
+def main2(stdscr):
+    # Clear the main window
+    stdscr.clear()
+
+    # Print a message in the main window
+    stdscr.addstr(0, 0, "Main Window")
+    stdscr.addstr(1, 0, "This is the main window.")
+    stdscr.addstr(2, 0, "You can type here.")
+
+    # Create a new sub-window with height 10, width 20, at position (5, 5)
+    win = curses.newwin(10, 20, 5, 5)
+
+    # Clear the sub-window
+    win.clear()
+
+    # Print a message in the sub-window
+    win.addstr(0, 0, "Sub-Window")
+    win.addstr(1, 0, "This is a sub-window.")
+    win.addstr(2, 0, "You can also type here.")
+
+    # Draw a box around the sub-window
+    win.box()
+
+    # Refresh the main window to make the changes visible
+    stdscr.refresh()
+
+    # Refresh the sub-window to make the changes visible
+    win.refresh()
+
+    # Wait for a key press
+    
+    stdscr.getkey()
+    
 def mainloop(stdscr):
     
     curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLUE)
@@ -22,19 +56,9 @@ def mainloop(stdscr):
     stdscr.refresh()
     
     X=5
-    Y=5
-    
-    rows, cols = stdscr.getmaxyx()
-    
-
-    
-    while True:
-        
-        curses.curs_set(1)
-        
-        
-
-        
+    Y=5    
+    rows, cols = stdscr.getmaxyx()    
+    while True:        
         k = stdscr.getkey()
         if k == "q":
             sys.exit(0)
@@ -46,12 +70,10 @@ def mainloop(stdscr):
         elif k == "KEY_LEFT":
             X-=1
         elif k == "KEY_RIGHT":
-            X+=1
-            
+            X+=1            
             
         sString='X'
-        
-        
+                
         if X< 1:
             X=1
         if Y< 1:
@@ -74,13 +96,14 @@ def mainloop(stdscr):
         stdscr.addstr(10, 10, "hello  \n world")
         
         editwin.addstr(1, 1, "EDIT WIN")  
-        editwin.refresh
+        
         editwin.getkey
             
             
-        curses.curs_set(1)
+        
 
         stdscr.refresh()
+        editwin.refresh
        
 #============================================================================
 #============================================================================
