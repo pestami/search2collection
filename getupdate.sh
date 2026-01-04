@@ -21,12 +21,12 @@ read -p "Continue? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][e
 
 rootsource=https://raw.githubusercontent.com/pestami/search2collection/
 branch=main/
-
-
+echo =======GETING README FILES=================================
 source01=pi4.txt  
 target01=/home/pi/RetroPie/roms/ports/search2collection/pi4.txt
 source01=pi3Bp.txt  
 target01=/home/pi/RetroPie/roms/ports/search2collection/pi4.txt
+echo =======GETING PYTHON========================================
 
 source02=colors.py 
 target02=/home/pi/RetroPie/roms/ports/search2collection/colors.py 
@@ -39,6 +39,13 @@ target04=/home/pi/RetroPie/roms/ports/search2collection/s2c_search_rich.py
 
 source05=s2c_db.py
 target05=/home/pi/RetroPie/roms/ports/search2collection/s2c_db.py
+
+echo =======GETING PYTHON Experimantal code =======================
+
+echo =======GETING PYTHON Experimantal code =======================
+
+
+echo =======GETING DataBase========================================
 
 #===list of files in text file=====
 # wget -i update.txt
