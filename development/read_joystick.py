@@ -22,29 +22,40 @@ def sentence_to_set(sentence):
 def main():
     devices = [evdev.InputDevice(fn) for fn in evdev.list_devices()]
     for device in devices:
-        print(f"Found DEVICE: {device.name}")
+        #print(f"Found DEVICE: {device.name}")
+        sTEXT="Gamepad:" +device.name + '\n'
         
         setDeviceName=sentence_to_set(device.name.lower())
         setControlers={'joystick','gamecontroller','gamepad','contoler'}
         
         
         if setDeviceName&setControlers:  # Look for joystick devices
-            print(f"Gamepad: {device.name}")
+            #print(f"Gamepad: {device.name}")
+            sTEXT+="Gamepad:" +device.name + '\n'
+            
+            sTEXT+='======read joystick====\n'
+            
+            os.system('clear')    
+            sTEXT='======read joystick====\n' 
             
             for event in device.read_loop():
                 
-                
-
-
-                #time.sleep(1)
+                #time.sleep(2)
+               
                 
                 if event.type == evdev.ecodes.EV_ABS:
-                    print(f"Axis {event.code}: {event.value}")
+                    #print(f"Axis {event.code}: {event.value}")
+                    sTEXT+="axis"+str(event.code ) +":"+ str(event.value)+" "
+                    print(sTEXT)
                     #break
                 elif event.type == evdev.ecodes.EV_KEY:
-                    print(f"Button {event.code}: {'pressed' if event.value == 1 else 'released'}")
+                    #print(f"Button {event.code}: {'pressed' if event.value == 1 else 'released'}")
                     #break
-
+                    sTEXT+="button:"+str(event.code ) +":"+ str(event.value)+" "
+                    print(sTEXT)
+                else:
+                    sTEXT+='................'
+                    print(sTEXT)   
 
 if __name__ == "__main__":
     main()
