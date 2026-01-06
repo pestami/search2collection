@@ -33,10 +33,11 @@ def main():
             
             for event in device.read_loop():
                 
-                
+                os.system('cls||clear')
+                print('==READ JOYSTICK using evdf======')
 
 
-                #time.sleep(1)
+                time.sleep(1)
                 
                 if event.type == evdev.ecodes.EV_ABS:
                     print(f"Axis {event.code}: {event.value}")

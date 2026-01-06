@@ -5,4 +5,4 @@ echo
 echo 
 #=========================================================
 
-python3 /home/pi/RetroPie/roms/ports/search2collection/keyboard_s2c.py
+python3 /home/pi/RetroPie/roms/ports/search2collection/development/keyboard_s2c.py
