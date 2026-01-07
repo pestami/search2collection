@@ -21,7 +21,7 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.columns import Columns
 
-
+from read_joystick_pygame import pygame_joystick
 
 
 
@@ -36,7 +36,7 @@ class Keyboard:
             ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P','CAPS'],
             ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', '!','DEL'],
             ['Z', 'X', 'C', 'V', 'B', 'N', '<', '>', '[', ']','CLR'],
-            ['-', '=', ',', '.', '/', ';', '\'', '{', '}']
+            ['-', '&', '+', '.', '/', ';', '\'', '{', '}','%','SPACE']
 
         ]
 
@@ -55,7 +55,7 @@ class Keyboard:
                 if (i+1, j+1) == focused_key:
                     # Highlight the focused key with red foreground and yellow background
                     highlighted_key = f'\033[91;103m{key.center(3)}\033[0m'
-                    highlighted_key = f'[magenta]{key.center(3)}[/magenta]'
+                    highlighted_key = f'[yellow]{key.center(3)}[/yellow]'
 
                     row_str += highlighted_key
                 elif key == '                                        ':
@@ -117,8 +117,11 @@ class Keyboard:
         nROW=1
         nCOL=1
         sPannelText2=''
+        sKey_virtual=''
 
-        while(sCMD!='q'):
+       # while(sCMD!='5'):
+        while(sKey_virtual !='ENTER'):
+            
             sCMD=''
             sPannelText = keyboard.draw_keyboard_textvar((nROW,nCOL))
 
@@ -134,18 +137,20 @@ class Keyboard:
     
             #-----COMMANDLINE------------------------------------------------------
 
-            key =self.read_keypress()
-            sCMD =key
-          
-
+            #key =self.read_keypress()
+            #sCMD =key
             key=''
+            
+            joy_kbd=pygame_joystick(my_debug=False)            
+            sCMD=joy_kbd.poll_joystick()      
+            
             #-------------------------------------------------------------------
             if sCMD in ['2','8','4','6','5','e','s','d','x',' ']:
-                os.system('cls||clear')
+                os.system('clear')
                 
             if sCMD in ['2','x']:
                 nROW+=1
-            if nROW > 4:
+            if nROW > 5:
                     nROW=1
             if sCMD in ['8','e']:
                 nROW-=1
@@ -164,8 +169,10 @@ class Keyboard:
                 if len(sKey_virtual)==1:
                     self.strCOMMANDLINE+=self.get_focused_key_rowcol(nROW,nCOL)
                 if sKey_virtual=='ENTER':
+                    sCMD='5'
+                if sKey_virtual=='SPACE':
                     sCMD=' '
-                    #self.strCOMMANDLINE
+                    self.strCOMMANDLINE+=' '
                 if sKey_virtual=='CLR':
                     self.strCOMMANDLINE=''
                 if sKey_virtual=='DEL':
@@ -194,7 +201,7 @@ if __name__ == "__main__":
 ##
 ##    print('5---------------------------------')
 
-    os.system('cls||clear')
+    os.system('clear')
     keyboard = Keyboard()
     sCOMMANDLINE= keyboard.draw_keyboard_loop()
     print(f'COMMANDLINE={sCOMMANDLINE} ')
