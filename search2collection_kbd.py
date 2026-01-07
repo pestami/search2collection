@@ -140,6 +140,8 @@ while(sCMD!='x'):
     #sCMD = console.input("Command: ")
     print(": " + sCMD)
     sCMD= keyboard.draw_keyboard_loop()
+    sCMD=sCMD.lower()
+
    
     # print( colors.cursor.blinkoff, "")
     if sCMD =='':
@@ -157,7 +159,7 @@ while(sCMD!='x'):
     # sCMD_PARAMETERS=sCMD.replace(sCOMMAND+' ','') # works for with or without parameter
     #----------------------------------------------------------------------
 
-    os.system('cls||clear')
+    os.system('clear')
 
 
 ###################################################################
