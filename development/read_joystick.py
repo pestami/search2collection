@@ -10,7 +10,8 @@ import evdev  #apt install python3-evdev
 import os
 import time
 
-
+class joystic4kbd:
+#===============================================================================
 def sentence_to_set(sentence):
     # Remove punctuation and convert to lower case
     sentence = ''.join(e for e in sentence if e.isalnum() or e.isspace()).lower()
@@ -18,7 +19,7 @@ def sentence_to_set(sentence):
     word_set = set(sentence.split())
     return word_set
 
-
+#===============================================================================
 def main():
     devices = [evdev.InputDevice(fn) for fn in evdev.list_devices()]
     for device in devices:
@@ -46,6 +47,6 @@ def main():
                     print(f"Button {event.code}: {'pressed' if event.value == 1 else 'released'}")
                     #break
 
-
+#===============================================================================
 if __name__ == "__main__":
     main()
