@@ -47,15 +47,18 @@ class Keyboard:
 #-------------------------------------------------------------------------------
     def draw_keyboard_textvar(self, focused_key):
         # Print the keyboard layout
+        
+        bg_red='$\textcolor{#ff0000}{background\ red}$'
+        
         strKEYBOARD=''
         for i, row in enumerate(self.keyboard_layout):
-            row_str = ''
+            row_str = '[red]'
             for j, key in enumerate(row):
 
                 if (i+1, j+1) == focused_key:
                     # Highlight the focused key with red foreground and yellow background
                     highlighted_key = f'\033[91;103m{key.center(3)}\033[0m'
-                    highlighted_key = f'[yellow]{key.center(3)}[/yellow]'
+                    highlighted_key = f'[bold][white]{key.center(3)}[/white][/bold]'
 
                     row_str += highlighted_key
                 elif key == '                                        ':
@@ -63,7 +66,7 @@ class Keyboard:
                 else:
                     row_str += key.center(3)
 
-            strKEYBOARD+=row_str + '\n'
+            strKEYBOARD+=row_str + '[/red]\n'
 
         return strKEYBOARD
 #-------------------------------------------------------------------------------
@@ -131,9 +134,10 @@ class Keyboard:
             sResultsTitle='KEYBOARD'
             sResultsTitle2='TYPED'
             keyboard_panel = Panel(sPannelText, title=sResultsTitle,height=8,width=40)
-            keyboard_panel2 = Panel(sPannelText2, title=sResultsTitle2,height=8,width=40)
+            keyboard_panel2 = Panel(sPannelText2, title=sResultsTitle2,height=5,width=40)
             #console.print(Columns([keyboard_panel]))
-            console.print(Columns([keyboard_panel, keyboard_panel2]))
+            console.print(Columns([keyboard_panel]))
+            console.print(Columns([keyboard_panel2]))
     
             #-----COMMANDLINE------------------------------------------------------
 
@@ -155,11 +159,11 @@ class Keyboard:
             if sCMD in ['8','e']:
                 nROW-=1
                 if nROW == 0:
-                        nROW=4
+                        nROW=5
             if sCMD in ['4','s']:
                 nCOL-=1
                 if nCOL ==0:
-                        nCOL=1
+                        nCOL=11
             if sCMD in ['6','d']:
                 nCOL+=1
                 if nCOL > 11:
@@ -178,7 +182,11 @@ class Keyboard:
                 if sKey_virtual=='DEL':
                     self.strCOMMANDLINE=self.strCOMMANDLINE[0:-1]
 
-            sPannelText2=' ROW=' + str(nROW) + ' COLUMN=' + str(nCOL) +'\n sKey='+ sCMD +  '\n Command:'+ self.strCOMMANDLINE
+            sPannelText2=' ROW=' + str(nROW) + ' COLUMN=' + str(nCOL) +'\n sKey='+ sCMD +  '\n Command:'+ self.strCOMMANDLINE   #DEBUG
+            
+            sPannelText2=' sKey='+ sCMD +  '\n Command:'+ self.strCOMMANDLINE
+            
+            
             # print(f'sCMD={sCMD} ')
             # print(f'ROW={nROW} COLUMN={nCOL}')
             # print(f'TypedText={self.strCOMMANDLINE}')

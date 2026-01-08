@@ -107,7 +107,15 @@ sFOOTER=''
 sHEADER=''
 sBODY=''
 
-keyboard = Keyboard()
+console.print('Press k to use Keyboard for text input:\n Press ENTER to cuse JOYSTICK for text input:')
+sCMD = console.input("Your Response: ")
+print(": " + sCMD)
+gui_interface='joystick'
+if sCMD.lower()=='k':
+    gui_interface='keyboard'
+
+if gui_interface=='joystick':
+    keyboard = Keyboard()
 
 while(sCMD!='x'):
 
@@ -136,11 +144,15 @@ while(sCMD!='x'):
 ##    console.print(Columns([keyboard_panel]))
 
     #-----COMMANDLINE------------------------------------------------------
-    # sCMD = str(input('Command:'))    ##   s space+invaders
-    #sCMD = console.input("Command: ")
-    print(": " + sCMD)
-    sCMD= keyboard.draw_keyboard_loop()
-    sCMD=sCMD.lower()
+    
+    if gui_interface=='keyboard':
+        #sCMD = str(input('Command:'))    ##   s space+invaders
+        sCMD = console.input("Command: ")
+        print(": " + sCMD)
+    
+    if gui_interface=='joystick':
+        sCMD= keyboard.draw_keyboard_loop()
+        sCMD=sCMD.lower()
 
    
     # print( colors.cursor.blinkoff, "")
