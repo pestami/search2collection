@@ -11,6 +11,7 @@ class pygame_joystick:
         
     def __init__(self,**arg):
         
+        self.my_debug=True
         self.my_debug=False
         
         # Initialize pygame
@@ -21,8 +22,7 @@ class pygame_joystick:
         
         
         if self.my_debug: print("===INITIALIZE=====")
-
-        
+      
         
 
     def poll_joystick(self,**arg):
@@ -49,73 +49,62 @@ class pygame_joystick:
         
         while True:
             # Get events
-            for event in pygame.event.get():
-                
+            for event in pygame.event.get():                
 
-                if CMD !='':    # Exit on button 0 press
-                        if self.my_debug: 
-                           print("Exiting program")
-                        # pygame.quit()
-                        # sys.exit()
-                        return CMD
-                        
-                if event.type == pygame.JOYBUTTONDOWN:
-                    if self.my_debug: 
-                       print(f"Button {event.button} released")
-                    if self.my_debug: 
-                           print("Presed Button")
-                    CMD="BUTTON"
-                    CMD="5"
-                    
+
+                                                 
                 if event.type == pygame.JOYBUTTONUP:
                     if self.my_debug: 
-                       print(f"Button {event.button} released")
-                    if self.my_debug: 
-                           print("Presed Button")
-                    CMD="BUTTON"
-                    CMD="5"
-                    
-                elif event.type == pygame.JOYAXISMOTION:
-                        if self.my_debug: 
-                           print(f"Axis {event.axis} moved to {event.value}")
-
-                elif event.type == pygame.JOYHATMOTION:
-                    if self.my_debug: 
-                           print(f"Hat {event.hat} moved to {event.value}")
-                    if event.value ==(-1,0):
+                           print(f"Button {event.button} released")
+                           
+                    if event.button ==2:
                         if self.my_debug: 
                            print("moved LEFT")
                         CMD="LEFT"
                         CMD="s"
                         
-                    if event.value ==(1,0):
+                    if event.button ==1:
                         if self.my_debug: 
                            print("moved RIGHT")
                         CMD="RIGHT"
                         CMD="d"
                             
-                    if event.value ==(0,1):
+                    if event.button ==3:
                         if self.my_debug: 
                                print("moved UP")
                         CMD="UP"
                         CMD="e"
-                    if event.value ==(0,-1):
+                    if event.button ==0:
                         if self.my_debug: 
                                 print("moved DOWN")
                         CMD="DOWN"
                         CMD="x"
-            
+                    if event.button ==5:
+                         if self.my_debug: 
+                                print("Released Button")
+                         CMD="BUTTON"
+                         CMD="5"
                     
-    
+                    if self.my_debug: 
+                                print("CMD=" + CMD)                              
+                        
                 # Delay to prevent high CPU usage
                     pygame.time.delay(50)
+                    
+                    if CMD !='':    # Exit on button 0 press
+                            if self.my_debug: 
+                               print("Exiting program")
+                            # pygame.quit()
+                            # sys.exit()
+                            return CMD
+                    
         return CMD   
     
 #===============================================================================
 if __name__ == "__main__":
     
     
-    joy_kbd=pygame_joystick(my_debug=False)
+    joy_kbd=pygame_joystick(my_debug=True)
     
     CMD=joy_kbd.poll_joystick()
     
