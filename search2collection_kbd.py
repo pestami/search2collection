@@ -31,6 +31,8 @@ from rich.columns import Columns
 #from rich.scrollable import Scrollable # not in rich
 import os
 
+from read_joystick_pygame import pygame_joystick
+
 console = Console()
 #==================================================================
 
@@ -107,15 +109,20 @@ sFOOTER=''
 sHEADER=''
 sBODY=''
 
-console.print('Press k to use Keyboard for text input:\n Press ENTER to cuse JOYSTICK for text input:')
-sCMD = console.input("Your Response: ")
-print(": " + sCMD)
+#----------------------------------------------------------------------------------------------------------
+
 gui_interface='joystick'
+sCMD=''
+# console.print('Press k to use Keyboard for text input:\n Press ENTER to cuse JOYSTICK for text input:')
+# sCMD = console.input("Your Response: ")
+# print(": " + sCMD)
+
 if sCMD.lower()=='k':
     gui_interface='keyboard'
 
 if gui_interface=='joystick':
     keyboard = Keyboard()
+#----------------------------------------------------------------------------------------------------------
 
 while(sCMD!='x'):
 
@@ -310,7 +317,10 @@ while(sCMD!='x'):
           print('Remember:')
           print('1. : restart emulationstation !')
           print('2. : Ensure collection is set visible !')
-          sDUMMY = str(input('press any key to continue:'))
+          #sDUMMY = str(input('press any key to continue:'))
+          
+          joy_kbd=pygame_joystick(my_debug=False)            
+          sDummy=joy_kbd.poll_joystick()   
 
     elif  sCOMMAND=='?':
           s2c_r.Help('')
@@ -324,7 +334,7 @@ while(sCMD!='x'):
         sResults_Text+='[/red]'
 
 ######################################################################
-sDUMMY = input('press any key to continue:')   ##  final wait
+# sDUMMY = input('press any key to continue:')   ##  final wait
 #-------------------------------------------------------------------------------
 #con.commit()
 #con.close()

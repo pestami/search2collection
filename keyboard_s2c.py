@@ -48,8 +48,7 @@ class Keyboard:
     def draw_keyboard_textvar(self, focused_key):
         # Print the keyboard layout
         
-        bg_red='$\textcolor{#ff0000}{background\ red}$'
-        
+                
         strKEYBOARD=''
         for i, row in enumerate(self.keyboard_layout):
             row_str = '[red]'
@@ -121,37 +120,48 @@ class Keyboard:
         nCOL=1
         sPannelText2=''
         sKey_virtual=''
+        
+     
+        #-----Initialize Print keyboard----------------------------------------
+        sPannelText = ' [blue]  X-left A-Right Y-up B-down [/blue]\n' + keyboard.draw_keyboard_textvar((nROW,nCOL)) +    '      [blue]fire=SELECT[/blue]'
+        sResultsTitle='KEYBOARD'
+        sResultsTitle2='TYPED'
+        keyboard_panel = Panel(sPannelText, title=sResultsTitle,height=9,width=40)
+        keyboard_panel2 = Panel(sPannelText2, title=sResultsTitle2,height=5,width=40)
+
+        console.print(Columns([keyboard_panel]))
+        #console.print(Columns([keyboard_panel2]))
+    
+        #---------------------------------------------------------------------
+        
 
        # while(sCMD!='5'):
+        #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         while(sKey_virtual !='ENTER'):
             
-            sCMD=''
-            sPannelText = keyboard.draw_keyboard_textvar((nROW,nCOL))
-
-
-            #sPannelText+='\nCOMMAND:' + self.strCOMMANDLINE
-            #-----COMMANDLINE------------------------------------------------------
-            sResultsTitle='KEYBOARD'
+            
+            sPannelText1 = keyboard.draw_keyboard_textvar((nROW,nCOL)) # returns text table of keyboard
+            sResultsTitle1='KEYBOARD'
             sResultsTitle2='TYPED'
-            keyboard_panel = Panel(sPannelText, title=sResultsTitle,height=8,width=40)
+            keyboard_panel1 = Panel(sPannelText1, title=sResultsTitle1,height=7,width=40)
             keyboard_panel2 = Panel(sPannelText2, title=sResultsTitle2,height=5,width=40)
-            #console.print(Columns([keyboard_panel]))
-            console.print(Columns([keyboard_panel]))
-            console.print(Columns([keyboard_panel2]))
-    
-            #-----COMMANDLINE------------------------------------------------------
 
+            if sCMD in ['2','8','4','6','5','e','s','d','x',' ']:
+                os.system('clear')
+                # console.print(Columns([keyboard_panel1]))
+                # console.print(Columns([keyboard_panel2]))     
+                console.print(Columns([keyboard_panel1, keyboard_panel2]))
+                sCMD=''
+                
+            #-----COMMANDLINE------------------------------------------------------
             #key =self.read_keypress()
             #sCMD =key
             key=''
             
             joy_kbd=pygame_joystick(my_debug=False)            
             sCMD=joy_kbd.poll_joystick()      
-            
-            #-------------------------------------------------------------------
-            if sCMD in ['2','8','4','6','5','e','s','d','x',' ']:
-                os.system('clear')
-                
+            #print(sCMD)
+            #-------------------------------------------------------------------                
             if sCMD in ['2','x']:
                 nROW+=1
             if nROW > 5:
@@ -181,11 +191,12 @@ class Keyboard:
                     self.strCOMMANDLINE=''
                 if sKey_virtual=='DEL':
                     self.strCOMMANDLINE=self.strCOMMANDLINE[0:-1]
-
+       
             sPannelText2=' ROW=' + str(nROW) + ' COLUMN=' + str(nCOL) +'\n sKey='+ sCMD +  '\n Command:'+ self.strCOMMANDLINE   #DEBUG
             
             sPannelText2=' sKey='+ sCMD +  '\n Command:'+ self.strCOMMANDLINE
-            
+            #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+             
             
             # print(f'sCMD={sCMD} ')
             # print(f'ROW={nROW} COLUMN={nCOL}')
@@ -198,80 +209,8 @@ class Keyboard:
 if __name__ == "__main__":
 
 
-##    print('1---------------------------------')
-##    keyboard = Keyboard()
-##    print('2---------------------------------')
-##    keyboard.draw_keyboard_terminal((1,1))
-##    print('3---------------------------------')
-##    sRES= keyboard.draw_keyboard_textvar((1,1))
-##    print(sRES)
-##    print('4---------------------------------')
-##
-##    print('5---------------------------------')
-
     os.system('clear')
     keyboard = Keyboard()
     sCOMMANDLINE= keyboard.draw_keyboard_loop()
     print(f'COMMANDLINE={sCOMMANDLINE} ')
-
-##    sCMD=''
-##    nROW=1
-##    nCOL=1
-##    sCMD_STRING=''
-##    os.system('cls||clear')
-##    keyboard = Keyboard()
-####    keyboard.draw_keyboard_terminal('A')
-####
-####    sKEYS= keyboard.draw_keyboard_2_string('A')
-####    print(sKEYS)
-##
-##    while(sCMD!='x'):
-##
-##        #----------------------------------------------------------------------
-##        keyboard = Keyboard()
-####        sPannelText = keyboard.draw_keyboard_2_string(sCMD)
-##        sPannelText = keyboard.draw_keyboard_2_string_rowcol(nROW,nCOL)
-##        #-----COMMANDLINE------------------------------------------------------
-##        sResultsTitle='KEYBOARD'
-##        keyboard_panel = Panel(sPannelText, title=sResultsTitle,height=7,width=40)
-##        console.print(Columns([keyboard_panel]))
-##
-##        # sCMD = str(input('Command:'))    ##   s space+invaders
-####        sCMD = console.input("Command: ")
-##        key = msvcrt.getch()
-##        sCMD =key.decode()
-##
-##        os.system('cls||clear')
-##
-##        if sCMD =='2':
-##            nROW+=1
-##            if nROW > 4:
-##                    nROW=1
-##        if sCMD =='8':
-##            nROW-=1
-##            if nROW == 0:
-##                    nROW=1
-##
-##        if sCMD =='4':
-##            nCOL-=1
-##            if nCOL ==0:
-##                    nCOL=1
-##        if sCMD =='6':
-##            nCOL+=1
-##            if nCOL > 11:
-##                    nCOL=1
-##
-##        if sCMD =='5':
-##            sKey_virtual=keyboard.get_focused_key_rowcol(nROW,nCOL)
-##            if len(sKey_virtual)==1:
-##                sCMD_STRING+=keyboard.get_focused_key_rowcol(nROW,nCOL)
-##            if sKey_virtual=='ENTER':
-##                sCMD='x'
-##                print(f'COMMAND = {sCMD_STRING}')
-##
-##
-##        print(f'ROW={nROW} COLUMN={nCOL}')
-##        print(f'TypedText={sCMD_STRING}')
-
-
 
