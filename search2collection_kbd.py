@@ -158,7 +158,7 @@ while(sCMD!='x'):
         print(": " + sCMD)
     
     if gui_interface=='joystick':
-        sCMD= keyboard.draw_keyboard_loop()
+        sCMD= keyboard.draw_keyboard_loop(left_text_panel, right_text_panel)
         sCMD=sCMD.lower()
 
    

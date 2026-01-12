@@ -111,7 +111,7 @@ class Keyboard:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
         return ch
 #-------------------------------------------------------------------------------
-    def draw_keyboard_loop(self):
+    def draw_keyboard_loop(self,sPannelTextExternal1,sPannelTextExternal2):
          
 
         keyboard = Keyboard()
@@ -121,17 +121,20 @@ class Keyboard:
         nCOL=1
         sPannelText2=''
         sKey_virtual=''
+        self.strCOMMANDLINE =''
+
         
      
         #-----Initialize Print keyboard----------------------------------------
-        sPannelText = ' [blue]  X-left A-Right Y-up B-down [/blue]\n' + keyboard.draw_keyboard_textvar((nROW,nCOL)) +    '      [blue]fire=SELECT[/blue]'
-        sResultsTitle='KEYBOARD'
+        sPannelText1 = ' [blue]  X-left A-Right Y-up B-down [/blue]\n' + keyboard.draw_keyboard_textvar((nROW,nCOL)) +    '      [blue]ENTER=SELECT EXIT=START[/blue]'
+        sResultsTitle1='KEYBOARD'
         sResultsTitle2='TYPED'
-        keyboard_panel = Panel(sPannelText, title=sResultsTitle,height=9,width=40)
-        keyboard_panel2 = Panel(sPannelText2, title=sResultsTitle2,height=5,width=40)
+ 
+        keyboard_panel3 = Panel(sPannelText1, title=sResultsTitle1,height=9,width=65)
+        keyboard_panel4 = Panel(sPannelText2, title=sResultsTitle2,height=9,width=65)
 
-        console.print(Columns([keyboard_panel]))
-        #console.print(Columns([keyboard_panel2]))
+
+        console.print(Columns([keyboard_panel3, keyboard_panel4]))
     
         #---------------------------------------------------------------------
         
@@ -140,18 +143,21 @@ class Keyboard:
         #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         while(sKey_virtual !='ENTER'):
             
+   
             
-            sPannelText1 = keyboard.draw_keyboard_textvar((nROW,nCOL)) # returns text table of keyboard
+            #-----SHOW KBD------------------------------------------------------
+            sPannelText1 = ' [blue]  X-left A-Right Y-up B-down [/blue]\n' + keyboard.draw_keyboard_textvar((nROW,nCOL)) +    '      [blue]ENTER=SELECT EXIT=START[/blue]'
             sResultsTitle1='KEYBOARD'
             sResultsTitle2='TYPED'
-            keyboard_panel1 = Panel(sPannelText1, title=sResultsTitle1,height=7,width=40)
-            keyboard_panel2 = Panel(sPannelText2, title=sResultsTitle2,height=5,width=40)
+            keyboard_panel3 = Panel(sPannelText1, title=sResultsTitle1,height=9,width=65)
+            keyboard_panel4 = Panel(sPannelText2, title=sResultsTitle2,height=9,width=65)
 
             if sCMD in ['2','8','4','6','5','e','s','d','x',' ','w','r']:
                 os.system('clear')
                 # console.print(Columns([keyboard_panel1]))
                 # console.print(Columns([keyboard_panel2]))     
-                console.print(Columns([keyboard_panel1, keyboard_panel2]))
+                console.print(Columns([sPannelTextExternal1, sPannelTextExternal2]))
+                console.print(Columns([keyboard_panel3, keyboard_panel4]))
                 #sCMD=''
                 
             #-----COMMANDLINE------------------------------------------------------
@@ -222,6 +228,6 @@ if __name__ == "__main__":
 
     os.system('clear')
     keyboard = Keyboard()
-    sCOMMANDLINE= keyboard.draw_keyboard_loop()
+    sCOMMANDLINE= keyboard.draw_keyboard_loop('','')
     print(f'COMMANDLINE={sCOMMANDLINE} ')
 
