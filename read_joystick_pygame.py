@@ -35,8 +35,9 @@ class pygame_joystick:
             ButtonLEFT =  buttons_config.get('ButtonLEFT', '')
             ButtonRIGHT =  buttons_config.get('ButtonRIGHT', '')
             ButtonSTART =  buttons_config.get('ButtonSTART', '')
+            ButtonSELECT =  buttons_config.get('ButtonSELECT', '')
     
-            return ButtonUP, ButtonDOWN, ButtonLEFT, ButtonRIGHT, ButtonSTART
+            return ButtonUP, ButtonDOWN, ButtonLEFT, ButtonRIGHT, ButtonSTART , ButtonSELECT
         else:
             print("The file does not contain a 'Buttons' section.")
             return None
@@ -64,7 +65,7 @@ class pygame_joystick:
         CMD=''
         
         
-        ButtonUP, ButtonDOWN, ButtonLEFT, ButtonRIGHT, ButtonSTART = self.load_ini_file('joystick_buttons.ini')
+        ButtonUP, ButtonDOWN, ButtonLEFT, ButtonRIGHT, ButtonSTART,ButtonSELECT = self.load_ini_file('joystick_buttons.ini')
         
         if self.my_debug: 
             print(f"ButtonUP: {ButtonUP}")
@@ -107,9 +108,15 @@ class pygame_joystick:
                     if event.button ==int(ButtonSTART):
                          if self.my_debug: 
                                 print("Released Button")
-                         CMD="BUTTON"
-                         CMD="5"
-                    
+                         CMD="START" 
+                         CMD="r"
+                         
+                    if event.button ==int(ButtonSELECT):
+                        if self.my_debug: 
+                               print("Released Button")
+                        CMD="SELECT"  
+                        CMD="w"     
+              
                     if self.my_debug: 
                                 print("CMD=" + CMD)                              
                         

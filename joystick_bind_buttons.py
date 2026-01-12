@@ -15,6 +15,7 @@ def map_buttons_to_ini_file(file_path,lButtonValues):
     config.set('Buttons', 'ButtonLEFT', lButtonValues[2])
     config.set('Buttons', 'ButtonRIGHT', lButtonValues[3])
     config.set('Buttons', 'ButtonSTART', lButtonValues[4])
+    config.set('Buttons', 'ButtonSELECT', lButtonValues[5])
 
     # Write to file
     with open(file_path, 'w') as configfile:
@@ -62,7 +63,7 @@ if __name__ == "__main__":
     
     #-------------------------------
     
-    lButtonValues=['','','','','']
+    lButtonValues=['','','','','','']
     joy_kbd=pygame_joystick(my_debug=False)    
 
     print("====================================")  
@@ -95,7 +96,11 @@ if __name__ == "__main__":
     lButtonValues[4]=str(sCMD)
     print(f"Start Button:{lButtonValues[4]}")
     
-    
+    print("====================================")  
+    print("Press  Select Button: ")        
+    sCMD=Read_Button()    
+    lButtonValues[5]=str(sCMD)
+    print(f"Start Button:{lButtonValues[5]}")
     
     
     

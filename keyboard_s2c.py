@@ -116,6 +116,7 @@ class Keyboard:
 
         keyboard = Keyboard()
         sCMD=''
+        sCMD_PRE=''
         nROW=1
         nCOL=1
         sPannelText2=''
@@ -146,19 +147,20 @@ class Keyboard:
             keyboard_panel1 = Panel(sPannelText1, title=sResultsTitle1,height=7,width=40)
             keyboard_panel2 = Panel(sPannelText2, title=sResultsTitle2,height=5,width=40)
 
-            if sCMD in ['2','8','4','6','5','e','s','d','x',' ']:
+            if sCMD in ['2','8','4','6','5','e','s','d','x',' ','w','r']:
                 os.system('clear')
                 # console.print(Columns([keyboard_panel1]))
                 # console.print(Columns([keyboard_panel2]))     
                 console.print(Columns([keyboard_panel1, keyboard_panel2]))
-                sCMD=''
+                #sCMD=''
                 
             #-----COMMANDLINE------------------------------------------------------
             #key =self.read_keypress()
             #sCMD =key
             key=''
             
-            joy_kbd=pygame_joystick(my_debug=False)            
+            joy_kbd=pygame_joystick(my_debug=False)  
+            sCMD_PRE=sCMD
             sCMD=joy_kbd.poll_joystick()      
             #print(sCMD)
             #-------------------------------------------------------------------                
@@ -178,10 +180,14 @@ class Keyboard:
                 nCOL+=1
                 if nCOL > 11:
                         nCOL=1
-            if sCMD in ['5',' ']:
-                sKey_virtual=self.get_focused_key_rowcol(nROW,nCOL)
+                        
+            if sCMD in ['5','w']:  #select
+            
+                sKey_virtual=self.get_focused_key_rowcol(nROW,nCOL)                           
+                
                 if len(sKey_virtual)==1:
                     self.strCOMMANDLINE+=self.get_focused_key_rowcol(nROW,nCOL)
+                    
                 if sKey_virtual=='ENTER':
                     sCMD='5'
                 if sKey_virtual=='SPACE':
@@ -191,10 +197,15 @@ class Keyboard:
                     self.strCOMMANDLINE=''
                 if sKey_virtual=='DEL':
                     self.strCOMMANDLINE=self.strCOMMANDLINE[0:-1]
+                    
+            if sCMD in ['9','r']:
+                sKey_virtual='ENTER'
+                
+                    
        
             sPannelText2=' ROW=' + str(nROW) + ' COLUMN=' + str(nCOL) +'\n sKey='+ sCMD +  '\n Command:'+ self.strCOMMANDLINE   #DEBUG
             
-            sPannelText2=' sKey='+ sCMD +  '\n Command:'+ self.strCOMMANDLINE
+            sPannelText2=' sCMD_PRE='+ sCMD_PRE + ' sCMD='+ sCMD +  '\n Command:'+ self.strCOMMANDLINE
             #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
              
             
